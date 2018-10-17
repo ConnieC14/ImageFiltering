@@ -21,15 +21,12 @@ bool isInteger(double a){
 Mat FixDimensions(Mat src, Mat dst, double delta) {
 	if ( isInteger((double) src.cols*delta) && isInteger((double) src.rows*delta) ) {
 		  if (delta > 1) {
-			  cout << "delta > 1" << endl;
 			  resize(src, dst, Size(), delta, delta, CV_INTER_LINEAR);
 		  }
 		  if (delta == 1.0) {
-		  		  cout << "delta = 1" << endl;
 		  		  return dst;
 		  	  }
 		  else {
-			  cout << "delta < 1" << endl;
 			  resize(src, dst, Size(), delta, delta, CV_INTER_AREA);
 		  }
 	  }
@@ -37,18 +34,14 @@ Mat FixDimensions(Mat src, Mat dst, double delta) {
 	  else {
 		  int test = (int) src.cols * delta;
 		  int test2 = (int) src.rows * delta;
-		  cout << "trying to fix this. COLS: " << test << endl;
-		  cout << "trying to fix this. ROWS: " << test2 << endl;
+
 		  if (delta > 1) {
-			  cout << "delta > 1" << endl;
 	  		  resize(src, dst, Size(), delta, delta, CV_INTER_LINEAR);
 		  }
 		  if (delta == 1.0) {
-			  cout << "delta = 1" << endl;
 			  return dst;
 		  }
 		  else {
-			  cout << "delta <1" << endl;
 	  		  resize(src, dst, Size(), delta, delta, CV_INTER_AREA);
 		  }
 	  }
@@ -187,11 +180,6 @@ void xyGaussianFilter(Mat src, Mat dst, Mat kernel, int imgHeight, int imgWidth,
 	int upXbound = ceil(kWidth / 2);
 	int lowYbound = -floor(kHeight / 2);
 	int upYbound = ceil(kHeight / 2);
-
-	cout << "lower x bound" << lowXbound << endl;
-	cout << "uper x bound" << upXbound << endl;
-	cout << "lower y bound" << lowYbound << endl;
-	cout << "lower y bound" << upYbound << endl;
 
 	// Fill in the kernel values appropriately
 	for (int xk = lowXbound; xk <= upXbound; xk++) {
@@ -398,8 +386,6 @@ Mat xyDirectionalFilter(Mat src, Mat dst, int step, bool y_true, int interval_he
 					else {
 						// Colors are in BGR format
 						tempInt = src.at<uchar>(imageY, imageX );
-//						cout << "image cols: " << imageX << "image rows: " << imageY << endl;
-
 					}
 
 					// Multiply every value of the filter with corresponding image pixel
@@ -428,22 +414,16 @@ Mat xyDirectionalFilter(Mat src, Mat dst, int step, bool y_true, int interval_he
 				}
 			}
 
-//			cout << "angle: " << angle;
 			// Add all values calculated
 			avg_magnitude += magnitude;
 			avg_direction += angle;
 			counter++;
 
 			if ((x_col % interval_width) == 0 && (y_row % interval_height) == 0) {
-//				std::cout << "counter is " << counter << endl;
 
 				// Find the average direction of all
 				avg_direction = avg_direction / counter;
 				avg_magnitude = avg_magnitude / counter;
-
-				std::cout << "**************************************" << endl;
-
-				std::cout << "Inside if. Avg dir: " << avg_direction << endl;
 
 				// Find the midpoint of grid and draw lines from there
 				Point midpoint, pt1, pt2;
@@ -502,7 +482,6 @@ Mat zDirectionalFilter(std::vector<Mat> src, Mat dst, int step, bool y_true, int
 		-1, 0, 1);
 
 	Y_kernel = X_kernel.t();
-	std::cout << "transposed matrix: " << Y_kernel << endl;
 
 	/*****************************************************************/
 	// Initializing Convolution
@@ -535,10 +514,6 @@ Mat zDirectionalFilter(std::vector<Mat> src, Mat dst, int step, bool y_true, int
 						float ykern = (Y_kernel.at<float>(kernelY, kernelX));
 						xintensity += ((tempInt)* xkern);
 						yintensity += ((tempInt)* ykern);
-
-					//				    std::cout << "OLD INTENSITY " << tempInt << endl;
-					//				    std::cout << "\t\t\t\NEW INTENSITY " << intensity << "\t\t\t\t KERNEL VAL " << kern << endl;
-
 				}
 			}
 			// Update variables and calculate magnitude and direction of vector
@@ -655,17 +630,6 @@ void ImageAnalysis(std::vector<Mat> images, std::vector<Mat> dst, Mat kernel, in
 		imwrite(text, dst[i]);
 
 	}
-//	Mat dstz = images[0];
-
-//	zGaussianFilter(images, dstz, kernel, imgHeight, imgWidth, kHeight, kWidth, delta);
-//	// Make a copy to save the final image
-//	final.reserve(dst.size());
-//	copy(dst.begin(), dst.end(),back_inserter(final));
-//
-//	dstz = zDirectionalFilter(images, dstz, step, false, 50, 50);
-
-
-//		CreateWindow("Source", images[0]);
 }
 
 
